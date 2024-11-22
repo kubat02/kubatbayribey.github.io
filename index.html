@@ -50,11 +50,23 @@
       { x: 400, y: 170, width: 20, height: 20, color: "red" },
     ];
 
-    // Çizim fonksiyonları
-    function drawPlayer() {
+      // Çizim fonksiyonları
+      function drawPlayer() {
+      // Karakter gövdesi
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x, player.y, player.width, player.height);
+  
+      // Kahverengi yön göstergesi
+      ctx.fillStyle = "brown";
+      if (player.facing === "right") {
+        // Sağ üstte küçük kutucuk
+        ctx.fillRect(player.x + player.width - 5, player.y + 5, 5, 5);
+        } else {
+        // Sol üstte küçük kutucuk
+        ctx.fillRect(player.x, player.y + 5, 5, 5);
+       }
     }
+
 
     function drawPlatforms() {
       map.platforms.forEach((p) => {
