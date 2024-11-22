@@ -200,11 +200,11 @@
       drawPlatforms();
       drawGoal();
       drawPlayer();
-      drawGhost(); // Hayalet çizimi
       drawEnemies();
       updatePlayer();
       updateGhost(); // Hayalet davranışı
       requestAnimationFrame(gameLoop);
+      drawGhost(); // Hayaleti çizer
     }
 
     gameLoop();
