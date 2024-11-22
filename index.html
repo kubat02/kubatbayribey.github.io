@@ -45,6 +45,18 @@
       goal: { x: 750, y: 340, width: 40, height: 40, color: "yellow" }, // Eve giriş
     };
 
+    // Hayalet özellikleri
+    const ghost = {
+      x: 300, // Hayaletin başlangıç pozisyonu
+      y: 280, // Hayaletin yüksekliği
+      width: 20,
+      height: 20,
+      color: "cyan",
+      speed: 1, // Hareket hızı
+      moving: true,
+    };
+
+
     // Düşmanlar
     const enemies = [
       { x: 400, y: 170, width: 20, height: 20, color: "red" },
@@ -55,7 +67,17 @@
       // Karakter gövdesi
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x, player.y, player.width, player.height);
-  
+
+        
+      function drawGhost() 
+      {
+      ctx.fillStyle = ghost.color;
+      ctx.fillRect(ghost.x, ghost.y, ghost.width, ghost.height);
+      }
+
+
+        
+        
       // Kahverengi yön göstergesi
       ctx.fillStyle = "brown";
       if (player.facing === "right") {
@@ -108,15 +130,34 @@
       }
     });
 
-    document.addEventListener("keyup", (e) => {
-      if (e.key === "ArrowRight" || e.key === "ArrowLeft") player.dx = 0;
-    });
+      document.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") player.dx = 0;
+      });
+  
+      // Güncelleme
+      function updatePlayer() {
+        player.x += player.dx;
+        player.y += player.dy;
+        player.dy += player.gravity;
+  
+        function updateGhost() {
+    // Hayalet, oyuncunun yüzüne bakıyorsa durur; sırtını dönmüşse yaklaşır
+    if (
+      (player.facing === "right" && player.x < ghost.x) ||
+      (player.facing === "left" && player.x > ghost.x)
+    ) {
+      ghost.moving = false; // Utanır, durur!
+    } else {
+      ghost.moving = true; // Yaklaşmaya başlar
+    }
+  
+    // Hareketi kontrol et
+    if (ghost.moving) {
+      if (player.x > ghost.x) ghost.x += ghost.speed;
+      if (player.x < ghost.x) ghost.x -= ghost.speed;
+    }
+  }
 
-    // Güncelleme
-    function updatePlayer() {
-      player.x += player.dx;
-      player.y += player.dy;
-      player.dy += player.gravity;
 
       // Platformlarda durma
       map.platforms.forEach((p) => {
@@ -159,8 +200,10 @@
       drawPlatforms();
       drawGoal();
       drawPlayer();
+      drawGhost(); // Hayalet çizimi
       drawEnemies();
       updatePlayer();
+      updateGhost(); // Hayalet davranışı
       requestAnimationFrame(gameLoop);
     }
 
