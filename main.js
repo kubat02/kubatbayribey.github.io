@@ -1,15 +1,14 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawMap(ctx);
-  drawPlayer(ctx);
-  drawEnemies(ctx);
-  updatePlayer();
-  updateEnemies();
-  checkMapCompletion(player);
-  requestAnimationFrame(gameLoop);
+function checkCollisions() {
+  currentMap.enemies.forEach((enemy) => {
+    if (
+      player.x < enemy.x + enemy.width &&
+      player.x + player.width > enemy.x &&
+      player.y < enemy.y + enemy.height &&
+      player.y + player.height > enemy.y
+    ) {
+      alert("Çarptınız! Bir can kaybettiniz.");
+      player.x = 50;
+      player.y = 300;
+    }
+  });
 }
-
-gameLoop();
